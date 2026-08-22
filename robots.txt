@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://serste2.github.io/Public-Record-SEO-Master-1996-2026/sitemap.xml

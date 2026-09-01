@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio Overlaps — Serena Stelitano / Serste</title>
+<meta name="description" content="An interactive Venn map of Serena Stelitano's portfolio across visual art, writing, data, XR, journalism and land-based practice.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://serste2.github.io/Public-Record-SEO-Master-1996-2026/portfolio-map.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Portfolio Overlaps — Serena Stelitano / Serste">
+<meta property="og:description" content="Explore projects where visual art, writing, data, XR, journalism and ecology overlap.">
+<meta property="og:url" content="https://serste2.github.io/Public-Record-SEO-Master-1996-2026/portfolio-map.html">
+<meta property="og:image" content="https://serste2.github.io/Public-Record-SEO-Master-1996-2026/assets/monograph/forest-data.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Portfolio Overlaps — Serena Stelitano / Serste","description":"Interactive map of projects across visual art, writing, data, XR, journalism and ecology.","url":"https://serste2.github.io/Public-Record-SEO-Master-1996-2026/portfolio-map.html","about":{"@type":"Person","name":"Serena Stelitano","alternateName":["Serste","SeLoPhlee"]}}</script>
+<style>
+:root{--bg:#0d1117;--bg2:#131922;--paper:#171e28;--text:#f0ece4;--muted:#b9b2a6;--gold:#f1ca78;--line:#344052;--art:#f1ca78;--writing:#ee9870;--data:#62c4d8;--xr:#a98ad8;--journalism:#6d9fdf;--ecology:#77b989}
+*{box-sizing:border-box;font-family:'Roboto Mono',monospace}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);line-height:1.58;font-size:16px}
+a{color:var(--gold);text-underline-offset:3px}
+button{font:inherit}
+.shell{max-width:1260px;margin:auto;padding:0 clamp(18px,4vw,52px) 72px}
+.mast{padding:42px 0 28px;border-bottom:1px solid var(--line)}
+.back{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.eyebrow{color:var(--gold);font-size:.76rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;margin:34px 0 10px}
+h1{font-size:clamp(2.5rem,7vw,6.2rem);line-height:.9;letter-spacing:-.065em;margin:0;max-width:980px}
+.dek{max-width:850px;font-size:1.08rem;color:#ddd5c8;margin:28px 0 0}
+.controls{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 18px;align-items:center}
+.controls-label{font-size:.76rem;color:var(--muted);margin-right:5px}
+.domain-filter{border:1px solid var(--line);background:transparent;color:var(--text);padding:9px 12px;cursor:pointer;min-height:42px}
+.domain-filter:hover,.domain-filter:focus-visible{border-color:var(--gold)}
+.domain-filter[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#151515;font-weight:700}
+.clear{border:0;background:transparent;color:var(--muted);padding:9px 10px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.clear:disabled{opacity:.38;cursor:default}
+.map-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.venn-wrap{position:relative;min-width:0}
+.venn-stage{position:relative;width:100%;height:690px;background:#090d12;border:1px solid var(--line);overflow:hidden}
+.venn-stage svg{display:block;width:100%;height:100%}
+.domain-circle{cursor:pointer;transition:opacity .2s ease,stroke-width .2s ease}
+.domain-circle.is-muted{opacity:.25}
+.domain-circle.is-active{stroke-width:4}
+.circle-label{font-size:14px;font-weight:700;fill:var(--text);pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:#0d1117;stroke-width:4px;stroke-linejoin:round}
+.project-node{position:absolute;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:2px solid #0d1117;background:#f5f0e7;color:#0d1117;cursor:pointer;transition:transform .16s ease,opacity .18s ease,background .16s ease,box-shadow .16s ease;box-shadow:0 0 0 1px #f5f0e755;z-index:2}
+.project-node::after{content:attr(data-short);position:absolute;left:50%;top:25px;transform:translateX(-50%);width:max-content;max-width:190px;padding:5px 7px;background:#05080c;color:var(--text);border:1px solid var(--line);font-size:.68rem;line-height:1.3;opacity:0;pointer-events:none;transition:opacity .14s ease;z-index:7}
+.project-node:hover,.project-node:focus-visible,.project-node.is-selected{transform:scale(1.45);background:var(--gold);box-shadow:0 0 0 4px #f1ca7830;z-index:6}
+.project-node:hover::after,.project-node:focus-visible::after{opacity:1}
+.project-node.is-muted{opacity:.08;pointer-events:none}
+.project-node:disabled{opacity:.08;pointer-events:none}
+.project-node.is-match{background:var(--gold)}
+.detail{background:var(--paper);border:1px solid var(--line);padding:24px;min-height:360px;position:sticky;top:18px}
+.detail .kicker{color:var(--gold);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.detail h2{font-size:1.42rem;line-height:1.2;margin:10px 0 14px}
+.detail p{margin:0 0 17px}
+.detail .role{color:#fff8e8}
+.detail .meta{color:var(--muted);font-size:.78rem}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0}
+.tag{display:inline-block;border:1px solid var(--line);padding:5px 7px;font-size:.7rem;color:#dcd6cc}
+.detail-link{display:inline-block;margin-top:8px;font-weight:700}
+.match-count{margin:18px 0 0;color:var(--muted);font-size:.78rem}
+.key{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.key-item{display:flex;align-items:center;gap:9px;font-size:.76rem;color:var(--muted)}
+.swatch{width:14px;height:14px;border-radius:50%;flex:0 0 auto}
+.note{max-width:900px;color:var(--muted);font-size:.78rem;margin:26px 0 0}
+@media(max-width:920px){.map-layout{grid-template-columns:1fr}.detail{position:static;min-height:0}.venn-stage{height:640px}}
+@media(max-width:620px){.mast{padding-top:28px}.controls{gap:6px}.domain-filter{flex:1 1 calc(50% - 6px)}.venn-stage{height:520px}.project-node{width:22px;height:22px;margin:-11px 0 0 -11px}.project-node::after{display:none}.key{grid-template-columns:1fr 1fr}.circle-label{font-size:12px}.detail{padding:19px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="mast">
+    <a class="back" href="index.html">← Monograph 1996–2026</a>
+    <p class="eyebrow">Interactive portfolio map</p>
+    <h1>Where the work overlaps</h1>
+    <p class="dek">The portfolio is not a sequence of separate careers. Select one or more fields to find the projects that connect them, then open a point to see the work, role and public record.</p>
+  </header>
+
+  <section aria-labelledby="map-title">
+    <h2 id="map-title" style="position:absolute;left:-9999px">Interactive Venn diagram of Serena Stelitano's portfolio</h2>
+    <div class="controls" aria-label="Filter projects by field">
+      <span class="controls-label">Show intersections:</span>
+      <button class="domain-filter" type="button" data-domain="art" aria-pressed="false">Art &amp; image</button>
+      <button class="domain-filter" type="button" data-domain="writing" aria-pressed="false">Writing &amp; editorial</button>
+      <button class="domain-filter" type="button" data-domain="data" aria-pressed="false">Data &amp; systems</button>
+      <button class="domain-filter" type="button" data-domain="xr" aria-pressed="false">XR &amp; spatial</button>
+      <button class="domain-filter" type="button" data-domain="journalism" aria-pressed="false">Journalism</button>
+      <button class="domain-filter" type="button" data-domain="ecology" aria-pressed="false">Land &amp; ecology</button>
+      <button class="clear" type="button" disabled>Clear</button>
+    </div>
+
+    <div class="map-layout">
+      <div class="venn-wrap">
+        <div class="venn-stage" id="venn-stage" aria-label="Six overlapping fields with selectable project points">
+          <svg id="venn-svg" role="img" aria-labelledby="venn-svg-title venn-svg-desc">
+            <title id="venn-svg-title">Portfolio overlap map</title>
+            <desc id="venn-svg-desc">Six overlapping circles represent art, writing, data, XR, journalism and ecology. Project points sit in their shared areas.</desc>
+          </svg>
+        </div>
+        <div class="key" id="domain-key" aria-label="Field colors"></div>
+        <p class="note">A project appears where its practices meet. Positions express relationships, not hierarchy or value. Credits and external sources remain attached to the individual records.</p>
+      </div>
+
+      <aside class="detail" id="detail" aria-live="polite">
+        <div class="kicker">Portfolio logic</div>
+        <h2>One practice, many working forms</h2>
+        <p class="role">Images become publications, data becomes space, investigations become environments and games, and land-based research returns as writing and visual evidence.</p>
+        <p class="meta">Choose a field or a project point. Selecting multiple fields reveals only projects that contain every selected practice.</p>
+        <p class="match-count" id="match-count">29 projects mapped.</p>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script>
+const domains={
+  art:{label:'Art & image',color:'var(--art)',x:.34,y:.29},
+  writing:{label:'Writing & editorial',color:'var(--writing)',x:.55,y:.25},
+  data:{label:'Data & systems',color:'var(--data)',x:.68,y:.43},
+  xr:{label:'XR & spatial',color:'var(--xr)',x:.57,y:.68},
+  journalism:{label:'Journalism',color:'var(--journalism)',x:.35,y:.68},
+  ecology:{label:'Land & ecology',color:'var(--ecology)',x:.22,y:.45}
+};
+
+const projects=[
+  {title:'Pitoti / PITOON',short:'Pitoti',years:'2012–2013',sets:['art','writing','data'],role:'Illustration and contemporary narrative developed from the rock engravings of Valle Camonica.',href:'index.html#c1'},
+  {title:'Carugate e il Parco degli Aironi',short:'Carugate',years:'2014',sets:['art','journalism','ecology'],role:'Visual response to a local mobilisation around land use, traffic and the proposed Carosello expansion.',href:'index.html#c1'},
+  {title:'Ucki: Diary of a Stone-age Boy',short:'Ucki',years:'2016–2019',sets:['art','writing','data'],role:'Archaeological interpretation, character design, educational publishing and a Pleistocene fauna memory game.',href:'index.html#c1'},
+  {title:'Andrea Camilleri, cassatina sulla terrazza a Marinella',short:'Camilleri',years:'2016',sets:['art','writing','journalism'],role:'Editorial portrait with a documented independent life across cultural publications and periodicals.',href:'index.html#c1'},
+  {title:'Serste on Steemit',short:'Steemit writing',years:'2018',sets:['art','writing'],role:'Public corpus of first-person essays, art criticism, process writing and bilingual visual-culture reporting.',href:'https://steemit.com/@serste/posts'},
+  {title:'DADA visual conversations',short:'DADA',years:'2015–2020',sets:['art','writing'],role:'Collaborative drawing used as dialogue, commentary, character exchange and distributed authorship.',href:'index.html#c2'},
+  {title:'Creeps & Weirdos',short:'Creeps & Weirdos',years:'2017',sets:['art','data'],role:'Early blockchain-native collection working with scarcity, provenance and digital editions.',href:'index.html#c2'},
+  {title:'The Way Home',short:'The Way Home',years:'2018–2019',sets:['art','writing','xr','journalism'],role:'Multimedia and AR work connecting image-making, migration and public narrative.',href:'index.html#chronology'},
+  {title:'Soul in the Machine / DADAGAN',short:'Soul in the Machine',years:'2019',sets:['art','data','xr'],role:'Human drawing, generative processing and physical/digital presentation combined in one collaborative system.',href:'index.html#c2'},
+  {title:'TXU.TOTEM',short:'TXU.TOTEM',years:'2020',sets:['art','data'],role:'Programmable collective artwork with contributor-controlled states and blockchain provenance.',href:'index.html#c3'},
+  {title:'Oracle, programmable fortune-teller',short:'Oracle',years:'2020',sets:['art','writing','data'],role:'Programmable artwork, explanatory writing, participant consultation, derivatives and a printable edition.',href:'index.html#c3'},
+  {title:'Andrea Grows',short:'Andrea Grows',years:'2021–2022',sets:['art','writing','xr'],role:'Interactive webcomic linked to collaborative drawing, QR access, digital publishing and a physical collector box.',href:'index.html#c3'},
+  {title:'PYF / DADA HOUSE',short:'PYF / DADA HOUSE',years:'2020–2022',sets:['art','xr'],role:'Virtual curation and architecture used to assemble international artists, images, rooms and encounters.',href:'index.html#c4'},
+  {title:'Rare Effect Vol. 1',short:'Rare Effect',years:'2021',sets:['art','xr'],role:'A hybrid cultural programme connecting a physical venue in Lisbon to its navigable virtual counterpart.',href:'index.html#c4'},
+  {title:'An Encroaching Desert Intensifies Nigeria’s Farmer-Herder Crisis',short:'Encroaching Desert',years:'2022',sets:['xr','journalism','ecology'],role:'Investigative reporting on environmental pressure and conflict translated into a navigable voxel environment.',href:'index.html#c5'},
+  {title:'Rivers of Sewage',short:'Rivers of Sewage',years:'2022',sets:['xr','data','journalism','ecology'],role:'Reporting, compliance data, reconstructed spaces and learning rooms organised as an immersive investigation.',href:'index.html#c5'},
+  {title:'Walk the Data',short:'Walk the Data',years:'2022–2023',sets:['xr','data','journalism','ecology'],role:'Wastewater compliance information organised spatially so visitors could navigate the evidence.',href:'index.html#c6'},
+  {title:'Direct Potable Reuse',short:'Direct Potable Reuse',years:'2022–2023',sets:['xr','data','journalism','ecology'],role:'Immersive reporting connected to geographic evidence through an external Google Earth layer.',href:'index.html#c6'},
+  {title:'Dreadlocks and Discrimination',short:'Dreadlocks',years:'2023',sets:['art','xr','data','journalism'],role:'Reported discrimination categories translated into wearable three-dimensional data visualisations.',href:'index.html#c6'},
+  {title:'Democracy Deferred',short:'Democracy Deferred',years:'2023–2025',sets:['xr','data','journalism'],role:'Election investigation distributed across spatial reporting, photography, documents and public interaction.',href:'index.html#c7'},
+  {title:'Shield Your Vote',short:'Shield Your Vote',years:'2023–2025',sets:['art','xr','data','journalism'],role:'AR experience turning polling-place evidence and election malfeasance into placement, shielding and navigation mechanics.',href:'index.html#c7'},
+  {title:'Forest Is Life',short:'Forest Is Life',years:'2025',sets:['xr','data','journalism','ecology'],role:'Featured VEZA investigation with Serena Stelitano credited for satellite imagery and XR/Metaverse design.',href:'https://veza.news/article/2025/10/27/forest-is-life-but-nigerias-last-rainforest-is-falling-fast/'},
+  {title:'Puddle Placer AR',short:'Puddle Placer AR',years:'2025',sets:['art','xr','data','journalism','ecology'],role:'Thermal differences derived from satellite data become placeable microclimates with distinct audiovisual behaviours.',href:'index.html#c9'},
+  {title:'The Data Vault Canyon',short:'Data Vault Canyon',years:'2025–2026',sets:['writing','xr','data','journalism'],role:'Investigative game design structured around data recovery, verification, newsroom roles and a final editorial choice.',href:'index.html#c8'},
+  {title:'The Bots Ridge',short:'The Bots Ridge',years:'2025–2026',sets:['writing','xr','data','journalism'],role:'Game-system expansion exploring coordinated bot activity, manipulated information and investigative response.',href:'index.html#c8'},
+  {title:'Truth & Dare',short:'Truth & Dare',years:'2025–2026',sets:['writing','journalism'],role:'Long-form journalism on how investigative reporters manage professional trauma and remain in the field.',href:'index.html#c9'},
+  {title:'I 75 anni della Riforma e gli ecosistemi al collasso',short:'Riforma / Maremma',years:'2026',sets:['writing','data','journalism','ecology'],role:'Historical and environmental analysis connecting land transformation, policy and ecological collapse in the Maremma.',href:'index.html#c9'},
+  {title:'Woman or Boar?',short:'Woman or Boar?',years:'2026',sets:['writing','data','journalism','ecology'],role:'Reported argument connecting gendered violence, hunting access, weapons, law and the treatment of wild animals.',href:'https://www.linkedin.com/pulse/woman-boar-serena-stelitano-apgie/'},
+  {title:'i prodotti della Natura — field R&D',short:'Farm R&D',years:'2019–2026',sets:['writing','xr','data','ecology'],role:'Regenerative land management, soil monitoring, biodiversity evidence, product research and spatial documentation in Tuscany.',href:'index.html#c9'}
+];
+
+const stage=document.getElementById('venn-stage');
+const svg=document.getElementById('venn-svg');
+const detail=document.getElementById('detail');
+const clearButton=document.querySelector('.clear');
+const filterButtons=[...document.querySelectorAll('.domain-filter')];
+const key=document.getElementById('domain-key');
+const selectedDomains=new Set();
+let selectedProject=null;
+let nodeButtons=[];
+
+Object.entries(domains).forEach(([id,d])=>{
+  const item=document.createElement('div');
+  item.className='key-item';
+  item.innerHTML=`<span class="swatch" style="background:${d.color}"></span><span>${d.label}</span>`;
+  key.appendChild(item);
+});
+
+function hash(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return Math.abs(h)}
+
+function projectMatches(project){return [...selectedDomains].every(id=>project.sets.includes(id))}
+
+function showProject(project,button){
+  selectedProject=project;
+  nodeButtons.forEach(b=>b.classList.toggle('is-selected',b===button));
+  detail.innerHTML=`<div class="kicker">${project.years}</div><h2>${project.title}</h2><p class="role">${project.role}</p><div class="tags">${project.sets.map(id=>`<span class="tag">${domains[id].label}</span>`).join('')}</div><a class="detail-link" href="${project.href}">Open public record →</a><p class="match-count" id="match-count">${projects.filter(projectMatches).length} projects match the active intersection.</p>`;
+}
+
+function updateFilters(){
+  filterButtons.forEach(button=>button.setAttribute('aria-pressed',selectedDomains.has(button.dataset.domain)?'true':'false'));
+  clearButton.disabled=selectedDomains.size===0;
+  nodeButtons.forEach((button,index)=>{
+    const match=projectMatches(projects[index]);
+    button.disabled=!match;
+    button.classList.toggle('is-muted',!match);
+    button.classList.toggle('is-match',match&&selectedDomains.size>0);
+  });
+  svg.querySelectorAll('.domain-circle').forEach(circle=>{
+    const active=selectedDomains.has(circle.dataset.domain);
+    circle.classList.toggle('is-active',active);
+    circle.classList.toggle('is-muted',selectedDomains.size>0&&!active);
+  });
+  const total=projects.filter(projectMatches).length;
+  const liveCount=document.getElementById('match-count');
+  if(liveCount)liveCount.textContent=selectedDomains.size?`${total} project${total===1?'':'s'} in this intersection.`:`${projects.length} projects mapped.`;
+  if(selectedProject&&!projectMatches(selectedProject)){
+    selectedProject=null;
+    nodeButtons.forEach(b=>b.classList.remove('is-selected'));
+    detail.innerHTML=`<div class="kicker">Selected intersection</div><h2>${[...selectedDomains].map(id=>domains[id].label).join(' + ')||'One practice, many working forms'}</h2><p class="role">${total?`The highlighted projects combine every selected field.`:'No mapped project combines all selected fields.'}</p><p class="meta">Select a highlighted point to open its role and public record.</p><p class="match-count" id="match-count">${selectedDomains.size?`${total} project${total===1?'':'s'} in this intersection.`:`${projects.length} projects mapped.`}</p>`;
+  }
+}
+
+function toggleDomain(id){selectedDomains.has(id)?selectedDomains.delete(id):selectedDomains.add(id);updateFilters()}
+filterButtons.forEach(button=>button.addEventListener('click',()=>toggleDomain(button.dataset.domain)));
+clearButton.addEventListener('click',()=>{selectedDomains.clear();updateFilters()});
+
+function draw(){
+  const w=stage.clientWidth;
+  const h=stage.clientHeight;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  svg.querySelectorAll('.drawn').forEach(el=>el.remove());
+  nodeButtons.forEach(button=>button.remove());
+  nodeButtons=[];
+  const radius=Math.min(w*.245,h*.31);
+  Object.entries(domains).forEach(([id,d])=>{
+    const ns='http://www.w3.org/2000/svg';
+    const circle=document.createElementNS(ns,'circle');
+    circle.classList.add('drawn','domain-circle');
+    circle.dataset.domain=id;
+    circle.setAttribute('cx',d.x*w);
+    circle.setAttribute('cy',d.y*h);
+    circle.setAttribute('r',radius);
+    circle.setAttribute('fill',d.color);
+    circle.setAttribute('fill-opacity','.115');
+    circle.setAttribute('stroke',d.color);
+    circle.setAttribute('stroke-opacity','.9');
+    circle.setAttribute('stroke-width','2');
+    circle.addEventListener('click',()=>toggleDomain(id));
+    svg.appendChild(circle);
+    const label=document.createElementNS(ns,'text');
+    label.classList.add('drawn','circle-label');
+    const dx=(d.x-.5)*radius*.72;
+    const dy=(d.y-.48)*radius*.72;
+    label.setAttribute('x',d.x*w+dx);
+    label.setAttribute('y',d.y*h+dy);
+    label.textContent=d.label;
+    svg.appendChild(label);
+  });
+
+  const points=projects.map((project,index)=>{
+    const centers=project.sets.map(id=>domains[id]);
+    const tx=centers.reduce((sum,d)=>sum+d.x*w,0)/centers.length;
+    const ty=centers.reduce((sum,d)=>sum+d.y*h,0)/centers.length;
+    const seed=hash(project.title);
+    const angle=(seed%360)*Math.PI/180;
+    const spread=10+(seed%31);
+    return {index,project,tx,ty,x:tx+Math.cos(angle)*spread,y:ty+Math.sin(angle)*spread};
+  });
+  for(let step=0;step<180;step++){
+    for(let i=0;i<points.length;i++){
+      const a=points[i];
+      a.x+=(a.tx-a.x)*.018;
+      a.y+=(a.ty-a.y)*.018;
+      for(let j=i+1;j<points.length;j++){
+        const b=points[j];
+        let dx=a.x-b.x,dy=a.y-b.y;
+        let dist=Math.sqrt(dx*dx+dy*dy)||.01;
+        const min=w<620?25:22;
+        if(dist<min){const push=(min-dist)*.055;dx/=dist;dy/=dist;a.x+=dx*push;a.y+=dy*push;b.x-=dx*push;b.y-=dy*push}
+      }
+      a.x=Math.max(18,Math.min(w-18,a.x));
+      a.y=Math.max(18,Math.min(h-18,a.y));
+    }
+  }
+  points.forEach(point=>{
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='project-node';
+    button.dataset.short=point.project.short;
+    button.setAttribute('aria-label',`${point.project.title}, ${point.project.years}`);
+    button.style.left=`${point.x}px`;
+    button.style.top=`${point.y}px`;
+    button.addEventListener('click',()=>showProject(point.project,button));
+    stage.appendChild(button);
+    nodeButtons[point.index]=button;
+  });
+  updateFilters();
+}
+
+let resizeTimer;
+window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(draw,100)});
+draw();
+</script>
+</body>
+</html>
